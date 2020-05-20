@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 // setup database
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGOLAB_BLACK_URI;
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
