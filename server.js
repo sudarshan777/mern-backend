@@ -12,16 +12,20 @@ app.use(express.json());
 // setup database
 
 const uri = process.env.MONGOLAB_BLACK_URI;
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  uri,
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  },
+  () => console.log("DB connected!")
+);
 
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB database connection has been established successfully");
-});
+// const connection = mongoose.connection;
+// connection.once("open", () => {
+//   console.log("MongoDB database connection has been established successfully");
+// });
 
 const exercisesRouter = require("./routes/exercises");
 const usersRouter = require("./routes/users");
