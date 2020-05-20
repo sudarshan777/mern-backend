@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-//const path = require("path");
 
 require("dotenv").config();
 //express server
@@ -29,11 +28,6 @@ const usersRouter = require("./routes/users");
 
 app.use("/exercises", exercisesRouter);
 app.use("/users", usersRouter);
-//const publicPath = path.join(__dirname, "..", "/build");
-//app.use(express.static(publicPath));
-//app.get("*", (req, res) => {
-//   res.sendFile(path.join(publicPath));
-// });
 
 //Starts listening to server
 const port = process.env.PORT || 5000;
