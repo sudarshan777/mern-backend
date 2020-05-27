@@ -1,17 +1,18 @@
 const router = require("express").Router();
 let User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
-
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
 // @route GET /users
 // @desc Register New User
 // @access Public
-router.route("/").get((req, res) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+// router.route("/").get((req, res) => {
+//   User.find()
+//     .then((users) => res.json(users))
+//     .catch((err) => res.status(400).json("Error: " + err));
+// });
 
-router.route("/add").post((req, res) => {
+router.route("/").post((req, res) => {
   const { name, email, password } = req.body;
 
   //Simple validation
@@ -31,15 +32,26 @@ router.route("/add").post((req, res) => {
         newUser.password = hash;
         newUser
           .save()
-          .then((user) =>
-            res.json({
-              user: {
-                id: user.id,
-                name: user.name,
-                email: user.email,
+          .then((user) => {
+            jwt.sign(
+              { id: user.id },
+              process.env.JWT_SECRET,
+              {
+                expiresIn: 3600,
               },
-            })
-          )
+              (err, token) => {
+                if (err) throw err;
+                res.json({
+                  token: token,
+                  user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                  },
+                });
+              }
+            );
+          })
           .catch((err) => res.status(400).json("Error: " + err));
       });
     });
